@@ -1,5 +1,7 @@
 package com.hui.practice.mqtt.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -17,23 +19,26 @@ public class MainController {
 
     private Random rnd = new Random();
     private IMqttClient publisher;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public MainController(IMqttClient publisher) {
+    public MainController(
+            IMqttClient publisher,
+            ObjectMapper objectMapper
+    ) {
         this.publisher = publisher;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping("publish")
-    public Object publish(@RequestBody Object msg) throws MqttException {
-        double temp = 80 + rnd.nextDouble() * 20.0;
-        byte[] payload = String.format("T:%04.2f", temp)
-                .getBytes();
+    public Object publish(@RequestBody Object msg) throws MqttException, JsonProcessingException {
+        byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes();
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(0);
+        mqttMsg.setQos(2);
         mqttMsg.setRetained(true);
         this.publisher.publish(TOPIC, mqttMsg);
         return new Object() {
-            public boolean sent;
+            public boolean sent = true;
         };
     }
 }

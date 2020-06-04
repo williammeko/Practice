@@ -1,5 +1,6 @@
 package com.hui.practice.mqtt.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.UUID;
 
 @Configuration
-public class MqttBeans {
+public class Beans {
     @Bean
     public IMqttClient publisher() throws MqttException {
         String publisherId = UUID.randomUUID().toString();
@@ -21,5 +22,10 @@ public class MqttBeans {
         options.setConnectionTimeout(10);
         publisher.connect(options);
         return publisher;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
