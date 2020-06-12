@@ -1,7 +1,9 @@
+/*
 package com.hui.practice.mqtt.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hui.practice.mqtt.config.MqttConfig;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -14,8 +16,9 @@ import java.io.UnsupportedEncodingException;
 
 @RestController
 public class MainController {
-    private static String TOPIC = "practiceTopic01";
+    private final static String TOPIC = "practiceTopic01";
 
+    private MqttConfig mqttConfig;
     private IMqttClient publisher;
     private IMqttClient publisher1;
     private IMqttClient publisher2;
@@ -26,6 +29,7 @@ public class MainController {
 
     @Autowired
     public MainController(
+            MqttConfig mqttConfig,
             IMqttClient publisher,
             IMqttClient publisher1,
             IMqttClient publisher2,
@@ -34,6 +38,7 @@ public class MainController {
             IMqttClient publisher5,
             ObjectMapper objectMapper
     ) {
+        this.mqttConfig = mqttConfig;
         this.publisher = publisher;
         this.publisher1 = publisher1;
         this.publisher2 = publisher2;
@@ -47,8 +52,8 @@ public class MainController {
     public Object publish(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -63,8 +68,8 @@ public class MainController {
     public Object publish1(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher1.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -79,8 +84,8 @@ public class MainController {
     public Object publish2(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher2.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -95,8 +100,8 @@ public class MainController {
     public Object publish3(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher3.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -111,8 +116,8 @@ public class MainController {
     public Object publish4(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher4.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -127,8 +132,8 @@ public class MainController {
     public Object publish5(@RequestBody Object msg) throws MqttException, JsonProcessingException, UnsupportedEncodingException {
         byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
         MqttMessage mqttMsg = new MqttMessage(payload);
-        mqttMsg.setQos(2);
-        mqttMsg.setRetained(true);
+        mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
+        mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
         try {
             this.publisher5.publish(TOPIC, mqttMsg);
         } catch (MqttException e) {
@@ -139,3 +144,4 @@ public class MainController {
         };
     }
 }
+*/
