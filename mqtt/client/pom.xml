@@ -48,11 +48,21 @@
                                     <mainClass>com.hui.practice.mqtt.client.Application</mainClass>
                                 </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.1.2</version>
@@ -63,17 +73,17 @@
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
-                        <configuration>
+                        &lt;!&ndash;<configuration>
                             <excludeScope>system</excludeScope>
                             <excludes>META-INF/*.SF</excludes>
                             <excludes>META-INF/*.DSA</excludes>
                             <excludes>META-INF/*.RSA</excludes>
                             <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                        </configuration>
+                        </configuration>&ndash;&gt;
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>

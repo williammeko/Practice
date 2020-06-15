@@ -17,17 +17,19 @@ public class Application {
     public static void main(String[] args) throws MqttException, InterruptedException, InvalidKeyException, NoSuchAlgorithmException {
         System.out.println("started.");
 
-        mqttSubscribe();
-//        aliyunMqttSubscribe();
+//        mqttSubscribe();
+        aliyunMqttSubscribe();
     }
 
     private static void mqttSubscribe() throws MqttException, InterruptedException {
-        String uri = "tcp://192.168.1.155:1883";
+        String uri = "tcp://192.168.21.175:1883";
         String clientId = "GJ1038-sub";
         String username = "huangya";
         String password = "eectrl";
         String topic = "topic01";
-        int qos = 0;
+        int qos = 2;
+        Integer maxInflight = 10;
+        Boolean cleanSession = false;
 
 /*
         IMqttClient subscriber = new MqttClient("tcp://mqtt.eclipse.org:1883", subscriberId);
@@ -37,14 +39,25 @@ public class Application {
         options.setPassword("eectrl".toCharArray());
 */
 
+        System.out.println("uri: " + uri);
+        System.out.println("clientId: " + clientId);
+        System.out.println("topic: " + topic);
+        System.out.println("qos: " + qos);
+        System.out.println("cleanSession: " + cleanSession);
+
         IMqttClient client = new MqttClient(uri, clientId);
         MqttConnectOptions options = new MqttConnectOptions();
         if (username != null) {
             options.setUserName(username);
             options.setPassword(password.toCharArray());
         }
+        if (maxInflight != null) {
+            options.setMaxInflight(maxInflight.intValue());
+        }
+        if (cleanSession != null) {
+            options.setCleanSession(cleanSession.booleanValue());
+        }
         options.setAutomaticReconnect(true);
-        options.setCleanSession(true);
         options.setConnectionTimeout(10);
 
         beginSubscribing(client, options, topic, qos);
@@ -58,10 +71,17 @@ public class Application {
         String groupId = "GID-001";
         String deviceId = "GJ1038-sub";
         String topic = "topic01";
-        int qos = 2;
+        int qos = 0;
         Integer maxInflight = 10;
-
+        Boolean cleanSession = false;
         String clientId = groupId + "@@@" + deviceId;
+
+        System.out.println("uri: " + uri);
+        System.out.println("clientId: " + clientId);
+        System.out.println("topic: " + topic);
+        System.out.println("qos: " + qos);
+        System.out.println("cleanSession: " + cleanSession);
+
         IMqttClient client = new MqttClient(uri, clientId);
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName("Signature|" + accessKeyId + "|" + instanceId);
@@ -72,9 +92,11 @@ public class Application {
         if (maxInflight != null) {
             options.setMaxInflight(maxInflight.intValue());
         }
+        if (cleanSession != null) {
+            options.setCleanSession(cleanSession.booleanValue());
+        }
         options.setServerURIs(new String[]{uri});
         options.setAutomaticReconnect(true);
-        options.setCleanSession(true);
         options.setConnectionTimeout(10);
 
         beginSubscribing(client, options, topic, qos);
@@ -88,7 +110,13 @@ public class Application {
         IMqttMessageListener listener = (t, msg) -> {
             byte[] payload = msg.getPayload();
             String data = new String(payload, "UTF-8");
-            System.out.println(++counter[0] + ": " + data);
+            int lengthToDisplay = data.length();
+            String moreChars = "";
+            if (lengthToDisplay > 100) {
+                lengthToDisplay = 96;
+                moreChars = " ...";
+            }
+            System.out.println(++counter[0] + ": " + data.substring(0, lengthToDisplay) + moreChars);
             receivedSignal.countDown();
         };
         client.subscribe(topic, qos, listener);

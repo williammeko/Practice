@@ -38,6 +38,7 @@ public class AliyunConfig {
             private String deviceId;
             private String topic;
             private Integer maxInflight;
+            private Boolean cleanSession;
 
             public String getUri() {
                 return uri;
@@ -108,6 +109,15 @@ public class AliyunConfig {
 
             public Publisher setMaxInflight(Integer maxInflight) {
                 this.maxInflight = maxInflight;
+                return this;
+            }
+
+            public Boolean getCleanSession() {
+                return cleanSession;
+            }
+
+            public Publisher setCleanSession(Boolean cleanSession) {
+                this.cleanSession = cleanSession;
                 return this;
             }
         }

@@ -17,7 +17,6 @@ public class SendController {
     private ObjectMapper objectMapper;
     private MqttUtilities mqttUtilities;
 
-    @Autowired
     public SendController(
             MqttConfig mqttConfig,
             ObjectMapper objectMapper,
@@ -35,7 +34,9 @@ public class SendController {
             byte[] payload = this.objectMapper.writeValueAsString(msg).getBytes("UTF-8");
             MqttMessage mqttMsg = new MqttMessage(payload);
             mqttMsg.setQos(this.mqttConfig.getPublishing().getQos());
-            mqttMsg.setRetained(this.mqttConfig.getPublishing().isRetained());
+            if (this.mqttConfig.getPublishing().getRetained() != null) {
+                mqttMsg.setRetained(this.mqttConfig.getPublishing().getRetained().booleanValue());
+            }
             sender.publish(topic, mqttMsg);
             return this.buildResponse(true, null);
         } catch (Exception e) {

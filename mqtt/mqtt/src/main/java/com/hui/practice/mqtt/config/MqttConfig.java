@@ -42,6 +42,7 @@ public class MqttConfig {
         private String username;
         private String password;
         private Integer maxInflight;
+        private Boolean cleanSession;
 
         public String getUri() {
             return uri;
@@ -78,11 +79,20 @@ public class MqttConfig {
             this.maxInflight = maxInflight;
             return this;
         }
+
+        public Boolean getCleanSession() {
+            return cleanSession;
+        }
+
+        public Publisher setCleanSession(Boolean cleanSession) {
+            this.cleanSession = cleanSession;
+            return this;
+        }
     }
 
     public static class Publishing {
         private int qos;
-        private boolean retained;
+        private Boolean retained;
 
         public int getQos() {
             return qos;
@@ -93,11 +103,11 @@ public class MqttConfig {
             return this;
         }
 
-        public boolean isRetained() {
+        public Boolean getRetained() {
             return retained;
         }
 
-        public Publishing setRetained(boolean retained) {
+        public Publishing setRetained(Boolean retained) {
             this.retained = retained;
             return this;
         }
