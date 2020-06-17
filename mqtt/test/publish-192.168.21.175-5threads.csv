@@ -1,3 +1,0 @@
-Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
-http://localhost:8081/publish,500,237,233,308,328,407,67,689,0.000%,20.36411,3.67,3.82
-TOTAL,500,237,233,308,328,407,67,689,0.000%,20.36411,3.67,3.82
